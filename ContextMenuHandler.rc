@@ -1,0 +1,51 @@
+﻿// Auto Generated.
+#include "resource.h"
+#include <windows.h>
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION     1,0,0,0
+ PRODUCTVERSION  1,0,0,0
+ FILEFLAGSMASK   0x3fL
+#ifdef _DEBUG
+ FILEFLAGS       0x1L
+#else
+ FILEFLAGS       0x0L
+#endif
+ FILEOS          VOS__WINDOWS32
+ FILETYPE        VFT_DLL
+ FILESUBTYPE     VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4" // LangID: US English, CharSet: Unicode
+        BEGIN
+            VALUE "CompanyName",      "Arti\0"
+            VALUE "FileDescription",  "Custom Context Menu Tools\0"
+            VALUE "FileVersion",      "1.0.0.0\0"
+            VALUE "InternalName",     "ContextMenuHandler.dll\0"
+            VALUE "LegalCopyright",   "MIT\0"
+            VALUE "OriginalFilename", "ContextMenuHandler.dll\0"
+            VALUE "ProductName",      "Arti's Tools\0"
+            VALUE "ProductVersion",   "1.0.0.0\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252 // LangID: US English, CharSet: Windows Multilingual
+    END
+END
+
+
+// Dialog Template for ExtChanger.cpp
+IDD_CONVERT_DIALOG DIALOGEX 0, 0, 260, 110 // x, y, width, height
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Change File Extension"
+FONT 8, "MS Shell Dlg 2", 0, 0, 0x1
+BEGIN
+    LTEXT           "File:", -1, 7, 7, 20, 8
+    LTEXT           "", IDC_FILENAME_LABEL, 30, 7, 223, 12, SS_PATHELLIPSIS // Static text for "File: <filename>"
+    LTEXT           "Convert to:", -1, 7, 30, 50, 8
+    COMBOBOX        IDC_TARGET_EXT_COMBO, 60, 28, 120, 80, CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK", IDOK, 140, 80, 50, 14, WS_GROUP
+    PUSHBUTTON      "Cancel", IDCANCEL, 200, 80, 50, 14
+END
