@@ -40,6 +40,8 @@ class CContextMenuExt final : public IShellExtInit, public IContextMenu
             CMD_INVALID = -1,
             CMD_CHANGE_EXT = 0,
             CMD_UPLOAD_TMPFILES = 1,
+            CMD_COPY_PATH = 2,
+            CMD_SHOW_HASHES = 3,
             // TODO: Add more when implemented
         };
 

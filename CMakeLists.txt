@@ -21,6 +21,10 @@ add_library(ContextMenuHandler SHARED
         pch.cpp
         pch.h
         resource.h
+        Tools/PathCopier.cpp
+        Tools/PathCopier.h
+        Tools/FileHasher.cpp
+        Tools/FileHasher.h
 )
 
 
@@ -37,6 +41,7 @@ target_link_libraries(ContextMenuHandler PRIVATE
         advapi32
         shlwapi
         Wininet
+        bcrypt
 )
 
 target_compile_definitions(ContextMenuHandler PRIVATE BUILDING_MY_DLL)

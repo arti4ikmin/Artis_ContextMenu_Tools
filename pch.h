@@ -11,5 +11,7 @@
 #include <Shlwapi.h>
 #include <strsafe.h>
 #include <unknwn.h>
+#include <bcrypt.h>
+#include <algorithm>
 
 #endif //PCH_H

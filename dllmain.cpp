@@ -1,4 +1,5 @@
 ﻿// This is the main file, strangely Ive read out that usually the lib mains contain only "standart" code and its unusual to stuff it up with your own
+// Id consider the "real" main ContextMenuExt.cpp or Registerer.cpp since they have the most important backend/ integration
 
 #include <initguid.h>
 #define INITGUID
