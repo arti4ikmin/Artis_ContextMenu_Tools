@@ -8,6 +8,8 @@ Tools for the windows explorer context menu (right click)
 - Copy File Path(s) (a better form of the already existing feature, without quotes and normal slashes)
 - Show File Hashes (MD5 and SHA256 currently)
   more to come...
+  
+![Screenshot](https://github.com/user-attachments/assets/c411e8e6-bbca-4798-9f6b-845f28a78017)
 
 
 ### Details
