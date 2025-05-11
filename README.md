@@ -27,5 +27,6 @@ If you want to change the name of the menu item from Arti`s Tools simply search 
 - More features (If I think of more)
 - More extension change options
 - somehow reduce the additional libs required for the dll to function
+- Add QR code when uploading to tmp files
 
 
