@@ -136,7 +136,7 @@ IFACEMETHODIMP CContextMenuExt::QueryContextMenu(const HMENU hmenu, const UINT i
     mii.fMask = MIIM_SUBMENU | MIIM_STRING | MIIM_ID;
     mii.wID = idCmdFirst + currentIdOffset; // ID for the submenu itself. uses the next available offset
     mii.hSubMenu = hSubMenu;
-    mii.dwTypeData = const_cast<LPWSTR>(L"Arti's Tools");
+    mii.dwTypeData = const_cast<LPWSTR>(L"Arti's Tools"); // CHANGE HERE FOR NAME
 
     if (!InsertMenuItemW(hmenu, indexMenu, TRUE, &mii)) {
          DestroyMenu(hSubMenu);
