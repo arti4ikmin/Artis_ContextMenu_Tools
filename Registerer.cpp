@@ -55,17 +55,20 @@ HRESULT RegisterContextMenuHandler() {
     hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
     if (FAILED(hr)) return hr;
 
+    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"AllFilesystemObjects\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
+
     // folders TODO: REMOVE IF NO USE IN FUTURE
     StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
-    //hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
+    hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
     // falure is here not critical ig
 
     // folder bg
     StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\Background\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
-    //hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
+    hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
     // same here
 
-    //TODO: UNCOMMENT HRs IF SMTH BREAKS
+    //TODO: COMMENT HRs IF SMTH BREAKS
     
     // HKCR\.txt\shellex\... if required in future, add here
 
@@ -86,6 +89,9 @@ HRESULT UnregisterContextMenuHandler() {
     StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"*\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
     SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath); // ig errors should be ignored, as they dont exist
 
+    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"AllFilesystemObjects\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath);
+    
     StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
     SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath);
 
@@ -93,6 +99,7 @@ HRESULT UnregisterContextMenuHandler() {
     SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath);
 
 
+    
     // 2 delete the CLSID key
     StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"CLSID\\%s", szClsid);
     const LONG lResult = SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath); // recursive

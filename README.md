@@ -13,6 +13,8 @@ Tools for the windows explorer context menu (right click)
 
 
 ### Details
+NOTE: Currently Struggling with applying to all file formats (??? Idfk whats wrong), the DLL responds as SUCCESS for each file, but in practice the menu doesnt show up :shrug:
+
 Project compiles to a COM (SHARED) lib
 
 Can be integrated with Regsvr32 <dllname> and unregistered adding a /u arg (requires admin)
@@ -28,5 +30,6 @@ If you want to change the name of the menu item from Arti`s Tools simply search 
 - More extension change options
 - somehow reduce the additional libs required for the dll to function
 - Add QR code when uploading to tmp files
+- Secure delete file (to prevent from restoring)
 
 

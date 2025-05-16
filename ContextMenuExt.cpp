@@ -12,6 +12,8 @@
 #include "Tools/FileHasher.h"
 //#include "Tools/NetworkUtils.h"
 
+// Code is now partially inspired by https://github.com/microsoft/PowerToys/blob/main/src/modules/FileLocksmith/FileLocksmithExt/ExplorerCommand.cpp (cuz Im too retareded to make a proper context menu)
+
 extern HINSTANCE g_hInstDll;
 extern long g_cRefModule;
 
