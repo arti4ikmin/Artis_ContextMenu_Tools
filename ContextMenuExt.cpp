@@ -10,6 +10,7 @@
 #include "Tools/UploadToTmpFiles.h"
 #include "Tools/PathCopier.h"
 #include "Tools/FileHasher.h"
+#include "Tools/SafeDeleter.h"
 //#include "Tools/NetworkUtils.h"
 
 // Code is now partially inspired by https://github.com/microsoft/PowerToys/blob/main/src/modules/FileLocksmith/FileLocksmithExt/ExplorerCommand.cpp (cuz Im too retareded to make a proper context menu)
@@ -128,6 +129,8 @@ IFACEMETHODIMP CContextMenuExt::QueryContextMenu(const HMENU hmenu, const UINT i
     currentIdOffset++;
     InsertMenuW(hSubMenu, currentIdOffset, MF_BYPOSITION | MF_STRING, MapCommandId(CMD_SHOW_HASHES, idCmdFirst), L"Show File Hashes");
     currentIdOffset++;
+    InsertMenuW(hSubMenu, currentIdOffset, MF_BYPOSITION | MF_STRING, MapCommandId(CMD_SAFE_DELETE, idCmdFirst), L"Safe Delete File(s)");
+    currentIdOffset++;
     
     // TODO: Add more items to hSubMenu here...
     
@@ -150,7 +153,7 @@ IFACEMETHODIMP CContextMenuExt::QueryContextMenu(const HMENU hmenu, const UINT i
     // ret the number of cmd IDs used by cmds (excluding the submenu container)
     // if the highest command enum is N (e.g. CMD_SHOW_HASHES= 3), return N + 1
     // currentIdOffset tracks used IDs: one per command plus one for the submenu itself
-    constexpr UINT maxCmdEnum = CMD_SHOW_HASHES;
+    constexpr UINT maxCmdEnum = CMD_SAFE_DELETE;
     return MAKE_HRESULT(SEVERITY_SUCCESS, FACILITY_NULL, maxCmdEnum + 1);
 }
 
@@ -183,6 +186,10 @@ IFACEMETHODIMP CContextMenuExt::InvokeCommand(const LPCMINVOKECOMMANDINFO pici) 
             Tools::ShowFileHashes(m_selectedFiles, pici->hwnd);
             return S_OK;
 
+        case CMD_SAFE_DELETE:
+            Tools::SafeDelFiles(m_selectedFiles, pici->hwnd);
+            return S_OK;
+        
             // TODO: ADD MORE IF RERQUIRED
 
         default:
@@ -221,8 +228,12 @@ IFACEMETHODIMP CContextMenuExt::GetCommandString(UINT_PTR idCmd, const UINT uTyp
                 case CMD_SHOW_HASHES:
                     pszText = L" ";
                     break;
+                case CMD_SAFE_DELETE:
+                    pszText = L" ";
+                    break;
             }
-            break;
+
+        break;
 
         case GCS_VERBA:
         
@@ -239,6 +250,9 @@ IFACEMETHODIMP CContextMenuExt::GetCommandString(UINT_PTR idCmd, const UINT uTyp
                     break;
                 case CMD_SHOW_HASHES:
                     pszText = L"MyTools_ShowHashes";
+                    break;
+                case CMD_SAFE_DELETE:
+                    pszText = L"MyTools_SafeDelete";
                     break;
             }
             break;

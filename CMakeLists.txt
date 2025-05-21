@@ -25,6 +25,8 @@ add_library(ContextMenuHandler SHARED
         Tools/PathCopier.h
         Tools/FileHasher.cpp
         Tools/FileHasher.h
+        Tools/SafeDeleter.cpp
+        Tools/SafeDeleter.h
 )
 
 

@@ -42,6 +42,7 @@ class CContextMenuExt final : public IShellExtInit, public IContextMenu
             CMD_UPLOAD_TMPFILES = 1,
             CMD_COPY_PATH = 2,
             CMD_SHOW_HASHES = 3,
+            CMD_SAFE_DELETE = 4,
             // TODO: Add more when implemented
         };
 
