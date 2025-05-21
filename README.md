@@ -7,7 +7,8 @@ Tools for the windows explorer context menu (right click)
 - Upload a file to TmpFiles and auto copy link (easily share)
 - Copy File Path(s) (a better form of the already existing feature, without quotes and normal slashes)
 - Show File Hashes (MD5 and SHA256 currently)
-  more to come...
+- Securely delete files (prevent restorage) (simply overwrites the binary a few times)
+- more to come...
   
 ![Screenshot](https://github.com/user-attachments/assets/c411e8e6-bbca-4798-9f6b-845f28a78017)
 
