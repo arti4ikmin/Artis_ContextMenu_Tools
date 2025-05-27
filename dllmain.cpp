@@ -26,6 +26,8 @@ BOOL APIENTRY DllMain(const HMODULE hModule, const DWORD ul_reason_for_call, LPV
         
         case DLL_PROCESS_DETACH:
             break;
+        default:
+            MessageBox(nullptr, reinterpret_cast<LPCSTR>(L"Unknown reason for DLL entry point call"), reinterpret_cast<LPCSTR>(L"Warning"), MB_OK | MB_ICONEXCLAMATION);
     }
     return TRUE;
 }

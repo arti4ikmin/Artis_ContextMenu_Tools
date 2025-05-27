@@ -198,7 +198,7 @@ void Tools::UploadToTmpFiles(const std::vector<std::wstring>& files, HWND hwndPa
         const std::string urlKey = "\"url\":\"";
         if (size_t urlPos = responseString.find(urlKey); urlPos != std::string::npos) {
             urlPos += urlKey.length();
-            if (size_t endQuote = responseString.find("\"", urlPos); endQuote != std::string::npos) {
+            if (size_t endQuote = responseString.find('\"', urlPos); endQuote != std::string::npos) {
                 std::string url_str = responseString.substr(urlPos, endQuote - urlPos);
 
                 if (std::wstring url_wstr(url_str.begin(), url_str.end()); CopyToClipboard(hwndParent, url_wstr)) {

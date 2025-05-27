@@ -10,6 +10,7 @@
 extern HINSTANCE g_hInstDll; // defined in dllmain
 
 #define SCPW StringCchPrintfW
+#define MB MessageBoxW
 
 auto HANDLER_NAME = L"CppToolsHandler";
 auto HANDLER_DESC = L"C++ Tools Context Menu Handler";
@@ -34,16 +35,26 @@ HRESULT RegisterContextMenuHandler() {
     GetModuleFileNameW(g_hInstDll, szModulePath, ARRAYSIZE(szModulePath));
 
     WCHAR szKeyPath[MAX_PATH];
-
-
+    HRESULT hr = S_OK;
     
     // 1 reg the COM (CLSID)
-    // TODO: add a if succeed foreach StringCchPrintfW (SCPW) to prevent "Function result of type 'HRESULT' should be used"
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"CLSID\\%s", szClsid);
-    HRESULT hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, HANDLER_DESC);
+    
+    HRESULT hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"CLSID\\%s", szClsid);
+    if (FAILED(hrTemp)) {
+        //MB(nullptr, L"Failed to SCPW CLSID\\%s", L"Fatal Error", MB_OK | MB_ICONWARNING);
+        return hrTemp;
+    }
+
+    hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, HANDLER_DESC);
     if (FAILED(hr)) return hr;
 
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"CLSID\\%s\\InprocServer32", szClsid);
+
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"CLSID\\%s\\InprocServer32", szClsid);
+    if (FAILED(hrTemp)) {
+        //MB(nullptr, L"Failed to SCPW CLSID\\%s\\InprocServer32", L"Fatal Error", MB_OK | MB_ICONWARNING);
+        return hrTemp;
+    }
+
     hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szModulePath);
      if (FAILED(hr)) return hr;
     hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, L"ThreadingModel", L"Apartment");
@@ -51,24 +62,47 @@ HRESULT RegisterContextMenuHandler() {
 
 
     // 2 reg as a contextMenuHandler for all
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"*\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+
+
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"*\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    if (FAILED(hrTemp)) {
+        //MB(nullptr, L"Failed to SCPW \\shellex\\ContextMenuHandlers\\%s", L"Fatal Error", MB_OK | MB_ICONWARNING);
+        return hrTemp;
+    }
+
     hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
     if (FAILED(hr)) return hr;
 
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"AllFilesystemObjects\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"AllFilesystemObjects\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    if (FAILED(hrTemp)) {
+        //MB(nullptr, L"Failed to SCPW AllFilesystemObjects\\shellex\\ContextMenuHandlers\\%s", L"Fatal Error", MB_OK | MB_ICONWARNING);
+        return hrTemp;
+    }
+
     hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
 
     // folders TODO: REMOVE IF NO USE IN FUTURE
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    if (FAILED(hrTemp)) {
+        //MB(nullptr, L"Failed to SCPW Directory\\shellex\\ContextMenuHandlers\\%s", L"Fatal Error", MB_OK | MB_ICONWARNING);
+        return hrTemp;
+    }
+
     hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
-    // falure is here not critical ig
+    // falure is here not critical ig (SetRegistryValue)
 
     // folder bg
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\Background\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
-    hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
-    // same here
 
-    //TODO: COMMENT HRs IF SMTH BREAKS
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\Background\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    if (FAILED(hrTemp)) {
+        //MB(nullptr, L"Failed to SCPW Directory\\Background\\shellex\\ContextMenuHandlers\\%s", L"Fatal Error", MB_OK | MB_ICONWARNING);
+        return hrTemp;
+    }
+
+    hr = SetRegistryValue(HKEY_CLASSES_ROOT, szKeyPath, nullptr, szClsid);
+    // same here (SetRegistryValue)
     
     // HKCR\.txt\shellex\... if required in future, add here
 
@@ -84,27 +118,53 @@ HRESULT UnregisterContextMenuHandler() {
     StringFromGUID2(CLSID_ContextMenuHandler, szClsid, ARRAYSIZE(szClsid));
 
     WCHAR szKeyPath[MAX_PATH];
+    HRESULT hrTemp = S_OK;
 
     // 1 del the handler keys
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"*\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"*\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    if (FAILED(hrTemp)) {
+        return hrTemp;
+    }
+
     SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath); // ig errors should be ignored, as they dont exist
 
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"AllFilesystemObjects\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"AllFilesystemObjects\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    if (FAILED(hrTemp)) {
+        return hrTemp;
+    }
+
     SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath);
     
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    if (FAILED(hrTemp)) {
+        return hrTemp;
+    }
+
     SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath);
 
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\Background\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"Directory\\Background\\shellex\\ContextMenuHandlers\\%s", HANDLER_NAME);
+    if (FAILED(hrTemp)) {
+        return hrTemp;
+    }
+
     SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath);
 
 
     
     // 2 delete the CLSID key
-    StringCchPrintfW(szKeyPath, ARRAYSIZE(szKeyPath), L"CLSID\\%s", szClsid);
+
+    hrTemp = SCPW(szKeyPath, ARRAYSIZE(szKeyPath), L"CLSID\\%s", szClsid);
+    if (FAILED(hrTemp)) {
+        return hrTemp;
+    }
+
     const LONG lResult = SHDeleteKeyW(HKEY_CLASSES_ROOT, szKeyPath); // recursive
 
-    // sand event
+    // send event
     SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
 
     return lResult == ERROR_SUCCESS || lResult == ERROR_FILE_NOT_FOUND ? S_OK : HRESULT_FROM_WIN32(lResult);
